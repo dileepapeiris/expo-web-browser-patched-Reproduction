@@ -18,7 +18,7 @@ This repository includes a local build (`.tgz`) of the modified `expo-web-browse
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/YOUR_USERNAME/expo-web-browser-blocked-popup-repro.git
-   cd expo-web-browser-blocked-popup-repro
+   cd expo-web-browser-blocked-popup-repro/test-app
    ```
 
 2. **Install dependencies:**
