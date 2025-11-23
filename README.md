@@ -2,6 +2,8 @@
 
 This repository serves as a minimal reproduction of a bug in `expo-web-browser` and includes the pre-packaged fix for verification.
 
+(PR with the fix: https://github.com/expo/expo/pull/41179)
+
 **The Issue:**
 On the web, when `WebBrowser.openBrowserAsync()` is blocked by the browser (e.g., inside in-app browsers like Instagram/Facebook or when triggered without a user gesture), it incorrectly resolves with `{ type: "opened" }` instead of throwing an error.
 
@@ -16,6 +18,7 @@ This repository includes a local build (`.tgz`) of the modified `expo-web-browse
 ## How to Test the Fix
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/expo-web-browser-blocked-popup-repro.git
    cd expo-web-browser-blocked-popup-repro/test-app
@@ -23,18 +26,34 @@ This repository includes a local build (`.tgz`) of the modified `expo-web-browse
 
 2. **Install dependencies:**
    This will automatically install the included patched version of `expo-web-browser` from the local `.tgz` file.
+
    ```bash
    npm install
    ```
 
 3. **Run on web:**
+
    ```bash
    npx expo start --web
    ```
 
 4. **Verify the Fix:**
-   - Open the URL in an Incognito window (or an environment that blocks popups).
-   - The app will automatically try to open a popup.
-   - **Expected Result:** The browser blocks the popup, and the app displays **"SUCCESS! Error Caught: ERR_WEB_BROWSER_BLOCKED"**.
-   - **Note:** Without this fix, the app would display "FAILED TO BLOCK" as it would receive a false success signal.
+   - The included `.tgz` (`expo-web-browser-15.0.7.tgz`) will not be automatically installed by `npm install` when running in the `test-app` folder. 
 
+   Install it manually using one of the commands below from the `test-app` directory:
+     - `npm install ./expo-web-browser-15.0.7.tgz`
+     - `npm install /full/path/to/expo-web-browser-15.0.7.tgz`
+     - Or run `npm install ` then drag-and-drop the `expo-web-browser-15.0.7.tgz` file into your terminal to paste the path, then press Enter.
+
+   - To reproduce a blocked popup you can either enable your browser's popup blocking or run the app in Incognito/Private mode (which often blocks automatic popups). 
+   
+   Steps to block popups in common browsers:
+     - Chrome: `Settings` → `Privacy and security` → `Site Settings` → `Pop-ups and redirects` → set to `Blocked`.
+     - Safari (macOS): `Safari` → `Settings` → `Websites` → `Pop-up Windows` → choose `Block` for the site or `When visiting other websites: Block`.
+     - Firefox: `Preferences` → `Privacy & Security` → `Permissions` → check `Block pop-up windows`.
+   - You can also test inside in-app browsers (Instagram/Facebook) where popups are often blocked by design. The test app triggers `WebBrowser.openBrowserAsync()` automatically on mount to simulate the condition.
+
+   - Expected Result: The popup is blocked and the app displays `"BLOCKED! Error caught: ERR_WEB_BROWSER_BLOCKED"` (or shows an error alert), indicating the patched `expo-web-browser` correctly detects blocked popups.
+
+   - Without the fix, the app will often display `"FAILED TO BLOCK"` because the library incorrectly returns a success result even when the browser blocked the popup.
+ 
