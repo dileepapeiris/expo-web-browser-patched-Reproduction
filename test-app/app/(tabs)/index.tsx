@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2025 dileepapeiris (GitHub: dileepapeiris)
+All rights reserved.
+*/
+
 import { StatusBar } from "expo-status-bar";
 import * as WebBrowser from "expo-web-browser";
 import { useEffect, useState } from "react";

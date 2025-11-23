@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2025 dileepapeiris (GitHub: dileepapeiris)
+All rights reserved.
+*/
+
 import { Tabs } from "expo-router";
 import React from "react";
 

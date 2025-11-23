@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2025 dileepapeiris (GitHub: dileepapeiris)
+All rights reserved.
+*/
+
 import type { PropsWithChildren, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {

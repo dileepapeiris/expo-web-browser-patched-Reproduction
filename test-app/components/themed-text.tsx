@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2025 dileepapeiris (GitHub: dileepapeiris)
+All rights reserved.
+*/
+
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { useThemeColor } from '@/hooks/use-theme-color';
