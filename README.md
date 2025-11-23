@@ -1,7 +1,6 @@
 # Expo WebBrowser Blocked Popup Reproduction (With Fix)
 
 [![expo](https://img.shields.io/badge/Expo-WebBrowser-blue.svg)](https://docs.expo.dev/versions/latest/sdk/webbrowser/)
-[![platforms](https://img.shields.io/badge/Platform-Web%20Only-lightgrey.svg)](#)
 [![status](https://img.shields.io/badge/Fix-Patched%20Build%20Included-brightgreen.svg)](#)
 
 
