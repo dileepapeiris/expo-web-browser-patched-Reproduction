@@ -7,7 +7,7 @@
 
 This repository serves as a minimal reproduction of a bug in `expo-web-browser` and includes the pre-packaged fix for verification.
 
-(PR with the fix: https://github.com/expo/expo/pull/41179)
+> **Related PR:** [expo/expo#41179](https://github.com/expo/expo/pull/41179)
 
 **The Issue:**
 On the web, when `WebBrowser.openBrowserAsync()` is blocked by the browser (e.g., inside in-app browsers like Instagram/Facebook or when triggered without a user gesture), it incorrectly resolves with `{ type: "opened" }` instead of throwing an error.
@@ -52,16 +52,21 @@ This repository includes a local build (`.tgz`) of the modified `expo-web-browse
 
    - To reproduce a blocked popup you can either enable your browser's popup blocking or run the app in Incognito/Private mode (which often blocks automatic popups). 
    
-   Steps to block popups in common browsers:
-     - Chrome: `Settings` → `Privacy and security` → `Site Settings` → `Pop-ups and redirects` → set to `Blocked`.
-     - Safari (macOS): `Safari` → `Settings` → `Websites` → `Pop-up Windows` → choose `Block` for the site or `When visiting other websites: Block`.
-     - Firefox: `Preferences` → `Privacy & Security` → `Permissions` → check `Block pop-up windows`.
-   - You can also test inside in-app browsers (Instagram/Facebook) where popups are often blocked by design. The test app triggers `WebBrowser.openBrowserAsync()` automatically on mount to simulate the condition.
+   Steps to Block Popups in Common Browsers
+
+   | Browser        | Steps to Block Popups                                                                                  |
+   |----------------|-------------------------------------------------------------------------------------------------------|
+   | Chrome         | Settings → Privacy and security → Site Settings → Pop-ups and redirects → set to Blocked               |
+   | Safari (macOS) | Safari → Settings → Websites → Pop-up Windows → choose Block for the site or When visiting other websites: Block |
+   | Firefox        | Preferences → Privacy & Security → Permissions → check Block pop-up windows                            |
+
+   **Note:** You can also test inside in-app browsers (Instagram/Facebook), where popups are often blocked by design.  
+   The test app triggers `WebBrowser.openBrowserAsync()` automatically on mount to simulate the condition.
 
    - Expected Result: The popup is blocked and the app displays `"BLOCKED! Error caught: ERR_WEB_BROWSER_BLOCKED"` (or shows an error alert), indicating the patched `expo-web-browser` correctly detects blocked popups.|
    
 
-https://github.com/user-attachments/assets/75894291-60b5-4fd8-9f84-46a0fbe7ea5c
+     https://github.com/user-attachments/assets/75894291-60b5-4fd8-9f84-46a0fbe7ea5c
 
 
 
@@ -69,5 +74,12 @@ https://github.com/user-attachments/assets/75894291-60b5-4fd8-9f84-46a0fbe7ea5c
  
 
 
-https://github.com/user-attachments/assets/2b51f444-4946-4913-8ae2-b2c5a0985915
+     https://github.com/user-attachments/assets/2b51f444-4946-4913-8ae2-b2c5a0985915
 
+ ## The Problem vs. The Fix
+
+| Feature | Without Fix (Current Behavior) | With Fix (Patched) |
+| :--- | :--- | :--- |
+| **Scenario** | `window.open()` is blocked by the browser (e.g., inside Instagram/Facebook or no user gesture). | `window.open()` is blocked by the browser. |
+| **Result** | **Silent Failure.** <br> Resolves with `{ type: "opened" }` as if it succeeded. | **Error Thrown.** <br> Rejects with `ERR_WEB_BROWSER_BLOCKED`. |
+| **User Exp** | App thinks popup opened; User sees nothing. | App catches error; User gets a fallback/alert. |
